@@ -140,7 +140,21 @@
                 }
             });
         }
-
+function handleRegister() {
+    let pin = document.getElementById('reg-pin').value;
+    if(pin.length !== 4) return alert("PIN must be 4 digits!");
+    
+    let newId = "U" + Math.floor(100000 + Math.random() * 900000);
+    // fetch এর ভেতর এই মোডটি যোগ করুন
+    fetch(`${GAS_URL}?action=register&userId=${newId}&pin=${pin}`, {mode: 'no-cors'})
+    .then(() => {
+        localStorage.setItem('global_uid', newId);
+        localStorage.setItem('global_pin', pin);
+        alert("Account Created!\nID: " + newId + "\nPIN: " + pin);
+        location.reload();
+    }).catch(err => alert("Connection Error! Check Internet or GAS URL."));
+}
+        
         function handleLogout() {
             if(confirm("Are you sure you want to logout?")) {
                 localStorage.clear();
