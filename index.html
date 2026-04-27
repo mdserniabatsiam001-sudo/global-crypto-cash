@@ -179,12 +179,17 @@
         let USER_ID = localStorage.getItem('global_uid');
     let USER_PIN = localStorage.getItem('global_pin');
 
+// মেমোরি থেকে আইডি এবং পিন চেক করা
+    let USER_ID = localStorage.getItem('global_uid');
+    let USER_PIN = localStorage.getItem('global_pin');
+
+    // এটি চেক করবে ইউজার লগইন আছে কি না
     window.onload = function() {
         if (!USER_ID || !USER_PIN) {
-            // যদি লগইন না থাকে, তবে লগইন স্ক্রিন দেখাবে
+            // আইডি বা পিন না থাকলে লগইন বক্স দেখাবে
             document.getElementById('auth-screen').style.display = 'flex';
         } else {
-            // লগইন থাকলে মেইন অ্যাপ লোড হবে
+            // লগইন থাকলে মেইন অ্যাপ দেখাবে
             document.getElementById('auth-screen').style.display = 'none';
             syncData(); 
         }
@@ -306,10 +311,11 @@
             });
     }
 }
-   function handleLogout() {
+  function handleLogout() {
     if(confirm("Are you sure you want to logout?")) {
-        localStorage.removeItem('global_uid');
-        localStorage.setItem('global_pin', '');
+        // মেমোরি থেকে ডেটা ডিলিট করা
+        localStorage.clear(); 
+        // পেজ রিফ্রেশ করা যাতে লগইন স্ক্রিন আসে
         location.reload(); 
     }
 }
