@@ -167,6 +167,7 @@
         <button class="nav-btn active" id="n-home" onclick="showTab('home', 'n-home')"><span class="nav-icon">🏠</span>HOME</button>
         <button class="nav-btn" id="n-task" onclick="showTab('tasks', 'n-task')"><span class="nav-icon">📋</span>TASKS</button>
         <button class="nav-btn" id="n-pay" onclick="showTab('payout', 'n-pay')"><span class="nav-icon">💰</span>PAYOUT</button>
+        <button class="nav-btn" id="n-logout" onclick="handleLogout()">LOGOUT</button>
     </div>
 
     <script>
@@ -175,8 +176,19 @@
         const VIDEO_AD = "YOUR_AD_LINK_HERE"; // বসিয়ে দিন আপনার অ্যাড লিঙ্ক
 
         // --- USER SYSTEM ---
-        let USER_ID = localStorage.getItem('global_uid') || "U" + Math.floor(100000 + Math.random() * 900000);
-        localStorage.setItem('global_uid', USER_ID);
+        let USER_ID = localStorage.getItem('global_uid');
+    let USER_PIN = localStorage.getItem('global_pin');
+
+    window.onload = function() {
+        if (!USER_ID || !USER_PIN) {
+            // যদি লগইন না থাকে, তবে লগইন স্ক্রিন দেখাবে
+            document.getElementById('auth-screen').style.display = 'flex';
+        } else {
+            // লগইন থাকলে মেইন অ্যাপ লোড হবে
+            document.getElementById('auth-screen').style.display = 'none';
+            syncData(); 
+        }
+    };
 
         // --- NAVIGATION ---
         function showTab(tabId, btnId) {
@@ -292,6 +304,13 @@
                     alert("Invalid User ID or PIN!");
                 }
             });
+    }
+}
+   function handleLogout() {
+    if(confirm("Are you sure you want to logout?")) {
+        localStorage.removeItem('global_uid');
+        localStorage.setItem('global_pin', '');
+        location.reload(); 
     }
 }
     </script>
