@@ -264,6 +264,36 @@
 
         // Initialize on load
         window.onload = syncData;
+   function handleAuth(mode) {
+    let id = document.getElementById('auth-id').value;
+    let pin = document.getElementById('auth-pin').value;
+
+    if (pin.length !== 4) return alert("PIN must be exactly 4 digits!");
+
+    if (mode === 'reg') {
+        let newId = "U" + Math.floor(100000 + Math.random() * 900000);
+        fetch(`${GAS_URL}?action=register&userId=${newId}&pin=${pin}`)
+            .then(() => {
+                localStorage.setItem('global_uid', newId);
+                localStorage.setItem('global_pin', pin);
+                alert("Account Created Successfully!\n\nYour ID: " + newId + "\nYour PIN: " + pin + "\n\nPLEASE COPY AND SAVE THIS NOW!");
+                location.reload();
+            });
+    } else {
+        if (!id) return alert("Please enter your User ID!");
+        fetch(`${GAS_URL}?action=login&userId=${id}&pin=${pin}`)
+            .then(res => res.text())
+            .then(data => {
+                if (data === "success") {
+                    localStorage.setItem('global_uid', id);
+                    localStorage.setItem('global_pin', pin);
+                    location.reload();
+                } else {
+                    alert("Invalid User ID or PIN!");
+                }
+            });
+    }
+}
     </script>
 </body>
 </html>
